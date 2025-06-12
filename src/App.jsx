@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import TodoItem from './components/TodoItem'
+import TaskForm from './components/TaskForm'
+import TaskList from './components/TaskList'
+import SearchBar from './components/SearchBar'
 
 const initialTasks = [
   { id: 1, text: 'Estudiar React', status: 'por hacer' },
@@ -44,49 +46,28 @@ function TodoApp() {
           Gestor de Tareas
         </h1>
 
-        <div className="flex flex-col md:flex-row gap-3 mb-4">
-          <input
-              className="border p-2 rounded w-full md:w-1/3"
-              placeholder="Buscar tarea..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-          />
-          <input
-              className="border p-2 rounded w-full md:w-1/2"
-              placeholder="Nueva tarea"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-          />
-          <button
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              onClick={addTask}
-          >
-            Agregar
-          </button>
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="w-full md:w-1/3">
+            <SearchBar 
+              search={search} 
+              setSearch={setSearch} 
+            />
+          </div>
+          <div className="w-full md:w-2/3">
+            <TaskForm 
+              text={text} 
+              setText={setText} 
+              addTask={addTask} 
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {['por hacer', 'haciendo', 'hechas'].map((status) => (
-              <div key={status}>
-                <h2 className="text-xl font-semibold mb-2 capitalize text-gray-700">
-                  {status}
-                </h2>
-                <div className="space-y-2">
-                  {filteredTasks
-                      .filter((task) => task.status === status)
-                      .map((task) => (
-                          <TodoItem
-                              key={task.id}
-                              task={task}
-                              updateStatus={updateStatus}
-                              deleteTask={deleteTask}
-                              updateText={updateText}
-                          />
-                      ))}
-                </div>
-              </div>
-          ))}
-        </div>
+        <TaskList 
+          filteredTasks={filteredTasks}
+          updateStatus={updateStatus}
+          deleteTask={deleteTask}
+          updateText={updateText}
+        />
       </div>
   );
 }
